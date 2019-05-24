@@ -1,0 +1,146 @@
+---
+title: "Statistics_project"
+author: "Seija Tuomi"
+date: "22 May 2019"
+output: html_document
+---
+
+
+library(tidyverse)
+
+##Comparison Experiment
+
+##NULL Hypothesis is - There is no difference between KCl and K2SO4 extraction of N species from any soil.  
+
+
+```{r}
+data<-read_csv("~/research.tuo/data_school_mine/stats/Comparison_Experiment_KCl_V_K2SO4.csv")
+library(ggplot2)
+```
+
+
+#Import data and create new column for Treatment
+#Create unique identifier by adding "value" of columnd 7, 9, 11 to make RepID column
+#Create a new column for DON (Dissolved organic carbon) which is Total N (inorg + org) analysed - sum of N (inorganic) species analysed.
+
+```{r}
+K1<-read.csv("~/research.tuo/data_school_mine/stats/Comparison_Experiment_KCl_V_K2SO4.csv")
+K1$Treatment<-rep(c("Urea","Water"), each=12, times=3)
+K1$RepID<-with(K1,interaction(Treatment, Extractant, Soil))
+K1$DON<-K1$TN_N_analy - K1$Sum_species
+```
+
+#Re-structure data
+ 
+```{r}
+K2<-gather(K1, key=N_type,value=amount, c(7,9,11))
+glimpse(K2)
+```
+
+#Visualising Data
+#Original units were Urea mg/L analysed but these plots were hard interpret
+
+```{r}
+ggplot((K2), aes(x=Soil, y=amount, colour=Extractant))+
+  geom_boxplot()+
+  facet_wrap(~ N_type)+
+  geom_hline(yintercept = 4.66)
+```
+
+#ammonia in 3 soils
+```{r}
+ggplot(K1,aes(Soil, y=NH3N_adjusted, colour=Extractant))+ 
+  geom_boxplot()
+```
+
+#nitrate in 3 soils
+```{r}
+ggplot(K1,aes(Soil, y=NO3_N_adjusted, colour=Extractant))+
+  geom_boxplot()
+```
+
+#Urea in 3 soils
+```{r}
+ggplot(K1,aes(Soil, y=Urea_N_adjusted, colour=Extractant))+
+  geom_boxplot()
+```
+
+#TN in 3 soils
+```{r}
+ggplot(K1,aes(Soil, y=TN_N_analy, colour=Extractant))+
+  geom_boxplot()+
+  geom_hline(yintercept = 4.66)
+```
+
+#(TN analysed) - (Sum_species)
+```{r}
+ggplot(K1,aes(Soil, y=DON, colour=Extractant))+
+  geom_boxplot()
+```
+
+#DON = TN - NH3_N - NO3_N - Urea_N
+```{r}
+ggplot(K1,aes(Soil, y=Sum_species, colour=Extractant))+
+  geom_boxplot()
+```
+
+#Why do we use log plots?
+
+#There are two main reasons to use logarithmic scales in charts and graphs. The first is to respond to #skewness towards large values; i.e., cases in which one or a few points are much larger than the bulk #of the data. The second is to show percent change or multiplicative factors.
+#Examples
+
+```{r}
+ggplot(K1, aes(Soil, log(Urea_N_adjusted), colour=Extractant))+geom_boxplot()+
+  facet_wrap(~Treatment)
+```
+```{r}
+ggplot(K1, aes(Treatment, log(Urea_N_adjusted), colour=Extractant))+geom_boxplot()+
+  facet_wrap(~Soil)
+```
+
+##Remove water from data
+
+##Marginal Effects
+```{r}
+K3<-subset(K1, Extractant != "H2O")
+```
+
+##Using log RE going up (homogenaity of variation)
+#lmer is a linear mixed effects model
+```{r}
+library(lmerTest)
+library(emmeans)
+lm1<-lmer(log(NH3N_adjusted)~Extractant+Treatment+Soil +(1|RepID), data=K3)
+```
+
+```{r}
+anova(lm1)
+summary(lm1)
+```
+#The F-statistic is simply a ratio of two variances. Variances are a measure of dispersion, or how far #the data are scattered from the mean. Larger values represent greater dispersion.
+#Variance is the square of the standard deviation.
+# The t-value measures the size of the difference relative to the variation in your sample data.
+
+## emmeans(lm, pairwise~Extractant,type="response")
+```{r}
+emmeans(lm1, pairwise~Extractant,type="response")
+```
+#Plotting lm1
+```{r}
+plot(lm1)
+```
+
+
+
+
+##Factorial Model
+
+lm2<-lmer(log(NH3N_adjusted)~Extractant*Soil +(1|RepID), data=K3)
+anova(lm2)
+summary(lm2)
+emmeans(lm2,pairwise~Extractant|Soil, type="response")
+emmeans(lm2,revpairwise~Extractant|Soil, type="response")
+
+plot(lm2)
+
+ 
