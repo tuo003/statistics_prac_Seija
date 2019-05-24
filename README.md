@@ -9,35 +9,32 @@ Urea_N  --> NH3_N --> NO3_N
 NO3_N is the most stable species.
 
 Treatments
-  -Water
-  -Urea (4.66mg/g soil)
+  -Water,
+  -Urea (4.66mg/g soil),
   
 Species of N analysed = Response
-  -NH3_N
-  -NO3_N
-  -TN
-  -Urea_N
-  -DON (dissolved organic nitrogen) is a calculation = TN - Urea_N - NH3_N - NO3_N
+  -NH3_N,
+  -NO3_N,
+  -TN,
+  -Urea_N,
+  -DON (dissolved organic nitrogen) is a calculation = TN - Urea_N - NH3_N - NO3_N.
   
 Factors
-  -Fertilizer (Water/Urea)
-  -Soil 3 types - acid, alkali, neutral
-  -Extractant - KCl, K2SO4, Water
+  -Fertilizer (Water/Urea),
+  -Soil 3 types - acid, alkali, neutral,
+  -Extractant - KCl, K2SO4, Water.
   
   Materials and Methods
   
 We selected the top 10 cm of soil from three different locations with differing soil properties. The soil samples were air dried at 40 degrees to a constant weight and ground to pass through a 2 mm sieve. Then 4 g of soil was weighed into 24 * 50 ml falcon tubes from soils A, B and C. Half of the samples received 1 ml of water and the other half received 1 ml of 1% Urea-N solution as a treatment. The falcon tubes were stoppered and incubated at 25 degrees for three days. Quadruplicate samples in 1:5, soil-solution ratio, were extracted with either deionised water, 2M KCl and 0.5M K2SO4 (Table 1). Each extract was filtered through a 0.45 um filter and analysed for NH3-N, (method USEPA 351.2), NO3-N (method USEPA 353.2), Urea (method Cozzi, S. 2004) and total nitrogen TN, (method USEPA 351.2) on O.I Analytical segmented flow analyser. Dissolved organic nitrogen, DON, is calculated from TN-sum of all species_N.
 
-Soil	Soil Type	Treatment	DI	KCl	K2SO4
+Soil	Soil Type	
 A	Coastal acid	
-   -Urea	
-	 -Water	
- B	Narrabri cotton alkali	
-   -Urea	
-	 -Water	
+  
+B	Narrabri cotton alkali	
+   	
 C	Corowa neutral	
-   -Urea 	
-	 -Water	
+   	
 
 WORKFLOW
   
