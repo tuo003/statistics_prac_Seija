@@ -42,7 +42,7 @@ WORKFLOW
   -restructure
   -check data types
   
-2. Visualise data
+2. Visualise data - which plots tell the story
   -"understand your data"
   
 3. Fit a model to data
